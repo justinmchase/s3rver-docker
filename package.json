@@ -1,0 +1,22 @@
+{
+  "name": "s3rver-docker",
+  "version": "1.0.0",
+  "description": "Run an s3rver instance configured to run in a Docker container specifically",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["aws-sdk", "s3", "docker"],
+  "author": "Justin Chase (justin.m.chase@gmail.com)",
+  "repository": {
+    "type": "GIT",
+    "url": "http://github.com/justinmchase/s3rver-docker"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "async": "2.6.1",
+    "debug": "4.1.0",
+    "request": "2.88.0",
+    "s3rver": "2.2.6"
+  }
+}

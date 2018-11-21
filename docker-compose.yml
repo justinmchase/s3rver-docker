@@ -1,0 +1,19 @@
+version: "3"
+services:
+  subscriber:
+    image: kennship/http-echo
+    ports:
+      - 3000:3000
+    environment:
+      SERVICE_NAME: subscriber
+  s3rver:
+    build: .
+    volumes:
+      - $PWD/.data:/app/.data
+    ports:
+      - 4569:4569
+    links:
+      - subscriber
+    environment:
+      DEBUG: s3rver
+      EVENTS: ObjectCreated:*(http://subscriber:3000/s3event)
