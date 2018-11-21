@@ -10,7 +10,7 @@
   "author": "Justin Chase (justin.m.chase@gmail.com)",
   "repository": {
     "type": "GIT",
-    "url": "http://github.com/justinmchase/s3rver-docker"
+    "url": "https://github.com/justinmchase/s3rver-docker"
   },
   "license": "ISC",
   "dependencies": {

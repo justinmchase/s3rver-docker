@@ -16,4 +16,4 @@ services:
       - subscriber
     environment:
       DEBUG: s3rver
-      EVENTS: ObjectCreated:*(http://subscriber:3000/s3event)
+      SUBSCRIBE: ObjectCreated:*(http://subscriber:3000/s3event)

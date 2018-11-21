@@ -26,7 +26,7 @@ const instance = server.run(function (err, host, port) {
   if (err) {
     console.error(err)
   } else {
-    console.log('now listening on host %s and port %d', host, port);
+    log('now listening on host %s and port %d', host, port);
   }
 });
 
@@ -47,7 +47,7 @@ instance.s3Event.subscribe(function (event) {
 function processSubscription (subscription, callback) {
   const { event, action, record } = this
   const { event: subevent, action: subaction, url } = subscription
-  if (event === subevent && (action === subaction || subaction === '*')) {
+  if ((event === subevent || subevent === '*') && (action === subaction || subaction === '*')) {
     const options = {
       method: 'POST',
       url,
@@ -83,7 +83,7 @@ function processRecord (record, callback) {
 function getSubscriptions () {
   // e.g. SUBSCRIBE=ObjectCreated:*(http://example.com/bar),ObjectCreated:Put(http://example.com/foo)
   if (process.env.SUBSCRIBE) {
-    return process.env.SUBSCRIBE.split(',').map(e => e.match(/^(\w+):(\w+|[*])\((.+)\)$/)).filter(e => e).map(([e, event, action, url]) => ({ event, action, url }))
+    return process.env.SUBSCRIBE.split(',').map(e => e.match(/^(\w+|[*]):(\w+|[*])\((.+)\)$/)).filter(e => e).map(([e, event, action, url]) => ({ event, action, url }))
   }
   return []
 }
