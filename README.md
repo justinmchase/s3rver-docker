@@ -31,11 +31,15 @@ aws s3 cp ./hello.txt s3://example/hello.txt --endpoint-url http://localhost:456
 Here is an example of how to configure the `aws-sdk` to use the local endpoint
 ```js
 import { S3 } from 'aws-sdk'
-const s3 = new S3({ endpoint: 'http://localhost:4569' })
+const s3 = new S3({
+  endpoint: 'http://localhost:4569',
+  s3BucketEndpoint: true,
+  s3ForcePathStyle: true
+})
 ```
 
 ## Subscribing to events
-You can optionall subscribe to events using a simple subscription syntax into the `SUBSCRIBE` environment variable.
+You can optionally subscribe to events using a simple subscription syntax into the `SUBSCRIBE` environment variable.
 
 Here is an example of how to configure subscriptions using `docker-compose`
 ```yml
