@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const S3rver = require('./s3rver-workaround') // require('s3rver') // todo: return this after #346 is merged
+const S3rver = require('s3rver') // require('s3rver') // todo: return this after #346 is merged
 const request = require('request')
 const debug = require('debug')
 const { map } = require('async')

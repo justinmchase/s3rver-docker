@@ -8,5 +8,6 @@
     <AllowedMethod>OPTIONS</AllowedMethod>
     <MaxAgeSeconds>3000</MaxAgeSeconds>
     <AllowedHeader>Authorization</AllowedHeader>
+    <AllowedHeader>Content-Type</AllowedHeader>
   </CORSRule>
 </CORSConfiguration>
