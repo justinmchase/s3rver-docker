@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const S3rver = require('s3rver')
 const request = require('request')
@@ -11,13 +12,15 @@ const hostname = '0.0.0.0'
 const silent = process.env.SILENT === 'true' || false
 const directory = process.cwd() + '/.data'
 const subscriptions = getSubscriptions()
+const cors = fs.readFileSync(`${__dirname}/cors.xml`).toString('utf8')
 log('subscriptions:', subscriptions)
 
 const params = {
   port,
   silent,
   hostname,
-  directory
+  directory,
+  cors
 }
 log('params:', params)
 
