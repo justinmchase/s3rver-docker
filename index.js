@@ -29,7 +29,7 @@ const instance = server.run(function (err, host, port) {
   if (err) {
     console.error(err)
   } else {
-    log('now listening on host %s and port %d', host, port);
+    console.log('now listening on host %s and port %d', host, port);
   }
 });
 
