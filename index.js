@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const S3rver = require('s3rver')
+const S3rver = require('./s3rver-workaround') // require('s3rver') // todo: return this after #346 is merged
 const request = require('request')
 const debug = require('debug')
 const { map } = require('async')
@@ -31,7 +31,7 @@ const instance = server.run(function (err, host, port) {
   } else {
     console.log('now listening on host %s and port %d', host, port);
   }
-});
+})
 
 instance.s3Event.subscribe(function (event) {
   // Example structure:
