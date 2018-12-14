@@ -1,6 +1,6 @@
 {
   "name": "s3rver-docker",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Run an s3rver instance configured to run in a Docker container specifically",
   "main": "index.js",
   "scripts": {
