@@ -43,14 +43,16 @@ instance.s3Event.subscribe(function (event) {
     const res = results
       .reduce((arr, item) => [...arr, ...item], [])
       .filter(i => i)
-    log(JSON.stringify(res, null, 2))
+    log('results:', JSON.stringify(res, null, 2))
   })
 })
 
 function processSubscription (subscription, callback) {
-  const { event, action, record } = this
-  const { event: subevent, action: subaction, url } = subscription
-  if ((event === subevent || subevent === '*') && (action === subaction || subaction === '*')) {
+  const { bucket, event, action, record } = this
+  const { bucket: subbucket, event: subevent, action: subaction, url } = subscription
+  if ((bucket === subbucket || subbucket === '*') &&
+    (event === subevent || subevent === '*') && 
+    (action === subaction || subaction === '*')) {
     const options = {
       method: 'POST',
       url,
@@ -59,34 +61,50 @@ function processSubscription (subscription, callback) {
         Records: [record]
       }
     }
-    log('sending event:', { event, action, url })
+    log('sending event:', { bucket, event, action, url })
     request(options, (err, res) => {
       if (err) return callback(err)
       const { statusCode, body } = res
-      callback(null, { url, event, action, statusCode, body })
+      callback(null, { url, bucket, event, action, statusCode, body })
     })
   } else {
     // No action, skip
+
+    log('no event for:', { bucket, event, action, url })
     callback()
   }
 }
 
 function processRecord (record, callback) {
-  const { eventName } = record
+  const { eventName, s3: { bucket: { name } } } = record
   const [event, action] = eventName.split(':')
   const context = {
+    bucket: name,
     event,
     action,
     record
   }
-  log('processing event:', { event, action })
+  log('processing event:', { bucket: name, event, action })
   map(subscriptions, processSubscription.bind(context), callback)
 }
 
 function getSubscriptions () {
-  // e.g. SUBSCRIBE=ObjectCreated:*(http://example.com/bar),ObjectCreated:Put(http://example.com/foo)
+  // e.g. SUBSCRIBE=bucket:ObjectCreated:*(http://example.com/bar),ObjectCreated:Put(http://example.com/foo)
   if (process.env.SUBSCRIBE) {
-    return process.env.SUBSCRIBE.split(',').map(e => e.match(/^(\w+|[*]):(\w+|[*])\((.+)\)$/)).filter(e => e).map(([e, event, action, url]) => ({ event, action, url }))
+    return process.env.SUBSCRIBE
+      .split(',')
+      .map(e => e.match(/^((\w|-)+):(\w+|[*]):(\w+|[*])\((.+)\)$/))
+      .filter(e => e)
+      .map(([g0, bucket, g2, event, action, url]) => ({ bucket, event, action, url }))
   }
   return []
 }
+
+function term (err) {
+  if (err) console.error(err)
+  instance.close()
+  process.exit()
+}
+
+process.on('SIGTERM', () => term())
+process.on('uncaughtException', err => term(err))

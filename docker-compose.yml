@@ -1,11 +1,13 @@
 version: "3"
 services:
+
   subscriber:
     image: kennship/http-echo
     ports:
       - 3000:3000
     environment:
       SERVICE_NAME: subscriber
+
   s3rver:
     build: .
     volumes:
@@ -16,4 +18,4 @@ services:
       - subscriber
     environment:
       DEBUG: s3rver
-      SUBSCRIBE: ObjectCreated:*(http://subscriber:3000/s3event)
+      SUBSCRIBE: test:ObjectCreated:*(http://subscriber:3000/test/index.handler)
