@@ -59,13 +59,14 @@ services:
     links:
       - subscriber
     environment:
-      SUBSCRIBE: "ObjectCreated:Put(http://subscriber:3000)"
+      SUBSCRIBE: "example:ObjectCreated:Put(http://subscriber:3000)"
 ```
 
 The syntax is:
 ```ml
 Subscriptions = Subscription(,Subscription)*
-Subscription = Event:Action\(Url\)
+Subscription = Bucket:Event:Action\(Url\)
+Bucket = /(\w|-)+/
 Event  = 'ObjectCreated' |
          'ObjectRemoved' |
          '*'
@@ -77,8 +78,8 @@ Action = 'Put' |
          'DeleteMarkerCreated' |
          '*'
 Url = http://Domain/Path
-Domain = \w+(.\w+)+
-Path = \w+(/\w+)*
+Domain = /\w+(.\w+)+/
+Path = /\w+(/\w+)*/
 ```
 
 ### AWS Documentation Details
