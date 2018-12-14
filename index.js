@@ -1,5 +1,5 @@
 const fs = require('fs')
-const path = require('path')
+const os = require('os')
 const S3rver = require('s3rver') // require('s3rver') // todo: return this after #346 is merged
 const request = require('request')
 const debug = require('debug')
@@ -29,7 +29,7 @@ const instance = server.run(function (err, host, port) {
   if (err) {
     console.error(err)
   } else {
-    console.log('now listening on host %s and port %d', host, port);
+    console.log('now listening on host %s and port %d', os.hostname(), port);
   }
 })
 
