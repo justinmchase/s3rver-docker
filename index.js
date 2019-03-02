@@ -40,10 +40,13 @@ instance.s3Event.subscribe(function (event) {
   map(records, processRecord, (err, results) => {
     if (err) return console.error(err)
     log('subscriptions processed.')
-    const res = results
+    results
       .reduce((arr, item) => [...arr, ...item], [])
       .filter(i => i)
-    log('results:', JSON.stringify(res, null, 2))
+      .forEach(r => {
+        if (r.statusCode !== 200) console.error(JSON.stringify(r, null, 2))
+        else log('result:', JSON.stringify(r, null, 2))
+      })
   })
 })
 
